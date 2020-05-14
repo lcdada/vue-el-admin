@@ -4,7 +4,8 @@
 			规格项：
 			<el-input  size="mini" style="width: 200px;" 
 			:value="item.name" @input="vModel('name',index,$event)">
-				<el-button slot="append" icon="el-icon-more"></el-button>
+				<el-button slot="append" icon="el-icon-more"
+				@click="chooseSkus"></el-button>
 			</el-input>
 			<el-radio-group size="mini"
 			:value="item.type" @input="vModel('type',index,$event)"
@@ -27,9 +28,10 @@
 			<!-- 规格属性列表 -->
 			<div class="d-flex align-items-center flex-wrap">
 				<sku-card-children :type="item.type"
-				v-for="(item2,index2) in item.list"
+				v-for="(item2,index2) in list"
 				:key="index2" :item="item2"
 				:index="index2" :cardIndex="index" 
+				v-dragging="{ item: item2, list: list, group: `skuItem${index}` }"
 				></sku-card-children>
 			</div>
 			<!-- 增加规格属性 -->
@@ -47,6 +49,7 @@
 	import skuCardChildren from './sku-card-children.vue'
 	import {mapState,mapMutations} from 'vuex'
 	export default{
+		inject:['app'],
 		props: {
 			item: Object,
 			index:Number,
@@ -60,14 +63,38 @@
 				list: this.item.list
 			}
 		},
+		mounted () {
+		    // this.$dragging.$on('dragged', ({ value }) => {
+		      
+		    // })
+		    this.$dragging.$on('dragend', (e) => {
+				// console.log(e)
+				if(e.group === 'skuItem'+this.index){
+					this.sortSkuValue({
+						index:this.index,
+						value:this.list
+					})
+				}
+		    })
+		},
 		methods: {
-			...mapMutations(['delSkuCard','vModelSkuCard','sortSkuCard','addSkuValue']),
+			...mapMutations(['delSkuCard','vModelSkuCard','sortSkuCard','addSkuValue','sortSkuValue']),
 			vModel(key,index,value){
 				this.vModelSkuCard({key,index,value})
 			},
 			// 排序规格卡片
 			sortCard(action,index){
 				this.sortSkuCard({action,index})
+			},
+			// 选择规格
+			chooseSkus(){
+				this.app.chooseSkus( (res)=>{
+					console.log(res)
+					this.vModel('name',this.index,res.name)
+					this.vModel('type',this.index,res.type)
+					this.vModel('list',this.index,res.list)
+					this.list = res.list
+				})
 			},
 		},
 	}

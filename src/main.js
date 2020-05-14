@@ -4,11 +4,16 @@ import './plugins/element.js'
 import router from "./router.js"
 import store from "./store"
 
+// 引入拖拽
+import VueDND from 'awe-dnd'
+ 
+Vue.use(VueDND)
 
 
 // 引入全局配置文件
 import $conf from "./common/config/config.js"
 Vue.prototype.$conf = $conf
+
 
 
 Vue.config.productionTip = false
