@@ -64,6 +64,10 @@
 			}
 		},
 		mounted () {
+			this.$watch('item.list',(newValue,oldValue) => {
+				// console.log(newValue)
+				this.list = newValue
+			})
 		    // this.$dragging.$on('dragged', ({ value }) => {
 		      
 		    // })
