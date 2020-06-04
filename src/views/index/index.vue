@@ -70,7 +70,7 @@
 			<el-col :span="12">
 				<el-card class="box-card" shadow="never">
 					<div slot="header" class="clearfix">
-						<span>销售情况统计</span>
+						<span>销售情况统计mac</span>
 						<el-button style="float: right; padding: 3px 0" type="text">按周期统计商家店铺的订单量和订单金额</el-button>
 					</div>
 					
